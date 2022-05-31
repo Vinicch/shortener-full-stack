@@ -3,13 +3,15 @@ package usecase
 import (
 	"errors"
 	"math/rand"
-	"strconv"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/vinicch/shortener-go/application/port"
 	"github.com/vinicch/shortener-go/domain"
 )
+
+const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 func Shorten(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist,
 	url, alias string) (domain.UrlAlias, error) {
@@ -37,13 +39,17 @@ func Shorten(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist,
 }
 
 func generateAlias(doesAliasExist port.DoesAliasExist) string {
-	random := rand.Int63()
-	alias := strconv.FormatInt(random, 36)
-	alias = alias[0:5]
+	rand.Seed(time.Now().UnixNano())
 
-	if doesAliasExist(alias) {
+	alias := make([]byte, 6)
+	for i := range alias {
+		index := rand.Intn(len(chars))
+		alias[i] = chars[index]
+	}
+
+	if doesAliasExist(string(alias)) {
 		return generateAlias(doesAliasExist)
 	}
 
-	return alias
+	return string(alias)
 }
