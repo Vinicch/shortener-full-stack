@@ -14,7 +14,7 @@ import (
 )
 
 // Creates a shortened version of a provided URL
-func Create(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist) gin.HandlerFunc {
+func Create(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		address := ctx.Query("url")
 		alias := ctx.Query("CUSTOM_ALIAS")
@@ -59,7 +59,7 @@ func Create(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist) gi
 }
 
 // Gets the URL that corresponds to the alias and redirects to it
-func Retrieve(getAlias port.GetAlias) gin.HandlerFunc {
+func Retrieve(getAlias port.GetURL) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		alias := ctx.Param("alias")
 

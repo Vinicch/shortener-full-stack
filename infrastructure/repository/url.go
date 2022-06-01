@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAlias(db *gorm.DB) port.GetAlias {
+func GetAlias(db *gorm.DB) port.GetURL {
 	return func(alias string) (*domain.Url, error) {
 		url := new(domain.Url)
 		err := db.Where("alias = ?", alias).First(&url).Error
@@ -15,7 +15,7 @@ func GetAlias(db *gorm.DB) port.GetAlias {
 	}
 }
 
-func CreateAlias(db *gorm.DB) port.CreateAlias {
+func CreateAlias(db *gorm.DB) port.CreateURL {
 	return func(entity *domain.Url) error {
 		return db.Create(entity).Error
 	}

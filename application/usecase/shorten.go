@@ -17,7 +17,7 @@ const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 // Uses an alias to create a shortened version of the provided URL.
 // If the alias is not provided, it will generate a random one
-func Shorten(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist,
+func Shorten(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist,
 	url, alias string) (domain.Url, error) {
 
 	if strings.TrimSpace(alias) != "" {
