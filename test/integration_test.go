@@ -21,7 +21,7 @@ func setup() *gin.Engine {
 	router := gin.Default()
 
 	router.POST("/create", web.Create(urlFunctions.CreateURL, urlFunctions.DoesAliasExist))
-	router.GET("/:alias", web.Retrieve(urlFunctions.GetURL, urlFunctions.UpdateURL))
+	router.GET("/url/:alias", web.Retrieve(urlFunctions.GetURL, urlFunctions.UpdateURL))
 	router.GET("/most-visited", web.MostVisited(urlFunctions.GetMostVisited))
 
 	return router
@@ -50,7 +50,7 @@ func TestCreateConflict(t *testing.T) {
 func TestRetrieve(t *testing.T) {
 	router := setup()
 	recorder := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/test", nil)
+	req, _ := http.NewRequest("GET", "/url/test", nil)
 
 	router.ServeHTTP(recorder, req)
 	assert.Equal(t, http.StatusMovedPermanently, recorder.Code)
@@ -59,7 +59,7 @@ func TestRetrieve(t *testing.T) {
 func TestRetrieveNotFound(t *testing.T) {
 	router := setup()
 	recorder := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/qwertyuiop", nil)
+	req, _ := http.NewRequest("GET", "/url/qwertyuiop", nil)
 
 	router.ServeHTTP(recorder, req)
 	assert.Equal(t, http.StatusNotFound, recorder.Code)

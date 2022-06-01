@@ -33,7 +33,7 @@ func Shorten(createURL port.CreateURL, doesAliasExist port.DoesAliasExist,
 		Id:        uuid.NewString(),
 		Alias:     alias,
 		Original:  url,
-		Shortened: fmt.Sprintf("%s/%s", host, alias),
+		Shortened: fmt.Sprintf("%s/url/%s", host, alias),
 	}
 
 	err := createURL(&entity)

@@ -15,7 +15,7 @@ func TestShorten(t *testing.T) {
 	port := "80"
 	url := "http://hostname.com/long/url/path"
 	alias := "test"
-	shortened := fmt.Sprintf("http://%s:%s/%s", host, port, alias)
+	shortened := fmt.Sprintf("http://%s:%s/url/%s", host, port, alias)
 
 	os.Setenv("HOST", host)
 	os.Setenv("PORT", port)
