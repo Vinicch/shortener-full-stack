@@ -14,18 +14,12 @@ import (
 func main() {
 	logging.Setup()
 
-	db := repository.Connect()
-	doesAliasExist := repository.DoesAliasExist(db)
-	createURL := repository.CreateURL(db)
-	getURL := repository.GetURL(db)
-	updateURL := repository.UpdateURL(db)
-	getMostVisited := repository.GetMostVisited(db)
-
+	urlFunctions := repository.MakeURLFunctions()
 	router := gin.Default()
 
-	router.POST("/create", web.Create(createURL, doesAliasExist))
-	router.GET("/:alias", web.Retrieve(getURL, updateURL))
-	router.GET("/most-visited", web.MostVisited(getMostVisited))
+	router.POST("/create", web.Create(urlFunctions.CreateURL, urlFunctions.DoesAliasExist))
+	router.GET("/:alias", web.Retrieve(urlFunctions.GetURL, urlFunctions.UpdateURL))
+	router.GET("/most-visited", web.MostVisited(urlFunctions.GetMostVisited))
 
 	address := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
 

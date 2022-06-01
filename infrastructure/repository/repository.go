@@ -5,22 +5,33 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog/log"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/vinicch/shortener-go/application/port"
 )
 
-func Connect() *gorm.DB {
-	url := os.Getenv("DATABASE_URL")
-	if strings.TrimSpace(url) == "" {
-		log.Fatal().Msg("DATABASE_URL not configured in environment")
+type urlFunctions struct {
+	port.GetURL
+	port.GetMostVisited
+	port.CreateURL
+	port.UpdateURL
+	port.DoesAliasExist
+}
+
+func MakeURLFunctions() urlFunctions {
+	db := os.Getenv("DATABASE")
+
+	switch strings.ToLower(db) {
+	case "postgres":
+		conn := createPgConnection()
+
+		return urlFunctions{
+			getURL(conn),
+			getMostVisited(conn),
+			createURL(conn),
+			updateURL(conn),
+			doesAliasExist(conn),
+		}
 	}
 
-	db, err := gorm.Open(postgres.Open(url))
-	if err != nil {
-		log.Fatal().Err(err).Msg("Error connecting to the database")
-	}
-
-	log.Debug().Msg("Database connection established")
-
-	return db
+	log.Fatal().Str("database", db).Msg("There's no implementation for this database")
+	return urlFunctions{}
 }

@@ -8,25 +8,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
+	"github.com/vinicch/shortener-go/infrastructure/logging"
 	"github.com/vinicch/shortener-go/infrastructure/repository"
 	"github.com/vinicch/shortener-go/infrastructure/web"
 )
 
 func setup() *gin.Engine {
+	logging.Setup()
 	godotenv.Load("../.env")
 
-	db := repository.Connect()
-	doesAliasExist := repository.DoesAliasExist(db)
-	createURL := repository.CreateURL(db)
-	getURL := repository.GetURL(db)
-	updateURL := repository.UpdateURL(db)
-	getMostVisited := repository.GetMostVisited(db)
-
+	urlFunctions := repository.MakeURLFunctions()
 	router := gin.Default()
 
-	router.POST("/create", web.Create(createURL, doesAliasExist))
-	router.GET("/:alias", web.Retrieve(getURL, updateURL))
-	router.GET("/most-visited", web.MostVisited(getMostVisited))
+	router.POST("/create", web.Create(urlFunctions.CreateURL, urlFunctions.DoesAliasExist))
+	router.GET("/:alias", web.Retrieve(urlFunctions.GetURL, urlFunctions.UpdateURL))
+	router.GET("/most-visited", web.MostVisited(urlFunctions.GetMostVisited))
 
 	return router
 }
