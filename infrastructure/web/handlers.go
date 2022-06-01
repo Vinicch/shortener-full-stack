@@ -87,6 +87,16 @@ func MostVisited(getMostVisited port.GetMostVisited) gin.HandlerFunc {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, urls)
+		response := []mostVisitedResponse{}
+
+		for _, url := range urls {
+			response = append(response, mostVisitedResponse{
+				Url:      url.Original,
+				ShortUrl: url.Shortened,
+				Visits:   url.Visits,
+			})
+		}
+
+		ctx.JSON(http.StatusOK, response)
 	}
 }

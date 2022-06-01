@@ -25,7 +25,7 @@ func main() {
 
 	router.POST("/create", web.Create(createURL, doesAliasExist))
 	router.GET("/:alias", web.Retrieve(getURL, updateURL))
-	router.GET("/mostVisited", web.MostVisited(getMostVisited))
+	router.GET("/most-visited", web.MostVisited(getMostVisited))
 
 	address := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
 
