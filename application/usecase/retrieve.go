@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/rs/zerolog/log"
 	"github.com/vinicch/shortener-go/application/port"
@@ -10,6 +11,10 @@ import (
 
 // Gets an URL that corresponds to a given alias
 func Retrieve(getURL port.GetURL, updateURL port.UpdateURL, alias string) (string, error) {
+	if strings.TrimSpace(alias) == "" {
+		return "", errors.New("'alias' not informed")
+	}
+
 	url, err := getURL(alias)
 	if err != nil {
 		log.Error().Err(err).Msg("Error getting URL info")
