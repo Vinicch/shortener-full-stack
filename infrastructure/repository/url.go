@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"errors"
+
 	"github.com/vinicch/shortener-go/application/port"
 	"github.com/vinicch/shortener-go/domain"
 	"gorm.io/gorm"
@@ -10,6 +12,9 @@ func GetURL(db *gorm.DB) port.GetURL {
 	return func(alias string) (*domain.Url, error) {
 		url := new(domain.Url)
 		err := db.Where("alias = ?", alias).First(&url).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
 
 		return url, err
 	}
