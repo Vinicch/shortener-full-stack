@@ -23,13 +23,15 @@ CREATE TABLE public.__schema_migrations (
 
 
 --
--- Name: url_alias; Type: TABLE; Schema: public; Owner: -
+-- Name: url; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.url_alias (
+CREATE TABLE public.url (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     alias character varying(6) NOT NULL,
-    url character varying NOT NULL
+    original character varying NOT NULL,
+    shortened character varying NOT NULL,
+    visits bigint NOT NULL
 );
 
 
@@ -42,18 +44,25 @@ ALTER TABLE ONLY public.__schema_migrations
 
 
 --
--- Name: url_alias url_alias_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: url url_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.url_alias
-    ADD CONSTRAINT url_alias_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.url
+    ADD CONSTRAINT url_pkey PRIMARY KEY (id);
 
 
 --
--- Name: alias_alias_key; Type: INDEX; Schema: public; Owner: -
+-- Name: url_alias_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX alias_alias_key ON public.url_alias USING btree (alias);
+CREATE UNIQUE INDEX url_alias_key ON public.url USING btree (alias);
+
+
+--
+-- Name: url_shortened_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX url_shortened_key ON public.url USING btree (shortened);
 
 
 --

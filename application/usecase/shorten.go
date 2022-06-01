@@ -2,7 +2,9 @@ package usecase
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -14,25 +16,27 @@ import (
 const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 func Shorten(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist,
-	url, alias string) (domain.UrlAlias, error) {
+	url, alias string) (domain.Url, error) {
 
 	if strings.TrimSpace(alias) != "" {
 		if doesAliasExist(alias) {
-			return domain.UrlAlias{}, errors.New("CUSTOM ALIAS ALREADY EXISTS")
+			return domain.Url{}, errors.New("CUSTOM ALIAS ALREADY EXISTS")
 		}
 	} else {
 		alias = generateAlias(doesAliasExist)
 	}
 
-	entity := domain.UrlAlias{
-		Id:    uuid.NewString(),
-		Alias: alias,
-		Url:   url,
+	host := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
+	entity := domain.Url{
+		Id:        uuid.NewString(),
+		Alias:     alias,
+		Original:  url,
+		Shortened: fmt.Sprintf("%s/%s", host, alias),
 	}
 
-	err := createAlias(entity)
+	err := createAlias(&entity)
 	if err != nil {
-		return domain.UrlAlias{}, err
+		return domain.Url{}, err
 	}
 
 	return entity, nil

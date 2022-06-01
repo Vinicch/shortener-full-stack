@@ -5,6 +5,6 @@ import (
 	"github.com/vinicch/shortener-go/domain"
 )
 
-func Retrieve(getAlias port.GetAlias, alias string) (domain.UrlAlias, error) {
+func Retrieve(getAlias port.GetAlias, alias string) (*domain.Url, error) {
 	return getAlias(alias)
 }

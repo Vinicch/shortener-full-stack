@@ -1,11 +1,14 @@
 -- migrate:up
-CREATE TABLE public.url_alias (
+CREATE TABLE public."url" (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     alias VARCHAR(6) NOT NULL,
-    "url" VARCHAR NOT NULL
+    original VARCHAR NOT NULL,
+    shortened VARCHAR NOT NULL,
+    visits bigint NOT NULL
 );
 
-CREATE UNIQUE INDEX alias_alias_key ON public.url_alias(alias);
+CREATE UNIQUE INDEX url_alias_key ON public."url"(alias);
+CREATE UNIQUE INDEX url_shortened_key ON public."url"(shortened);
 
 -- migrate:down
-DROP TABLE public.url_alias;
+DROP TABLE public."url";
