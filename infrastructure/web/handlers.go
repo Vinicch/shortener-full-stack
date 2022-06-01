@@ -58,8 +58,24 @@ func Create(createAlias port.CreateAlias, doesAliasExist port.DoesAliasExist) gi
 	}
 }
 
+// Gets the URL that corresponds to the alias and redirects to it
 func Retrieve(getAlias port.GetAlias) gin.HandlerFunc {
-	return func(ctx *gin.Context) {}
+	return func(ctx *gin.Context) {
+		alias := ctx.Param("alias")
+
+		url, err := usecase.Retrieve(getAlias, alias)
+		if err != nil {
+			if err.Error() == domain.ShortenedURLNotFound {
+				ctx.JSON(http.StatusNotFound, errorResponse{Code: "002", Description: err.Error()})
+				return
+			}
+
+			ctx.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+
+		ctx.Redirect(http.StatusMovedPermanently, url)
+	}
 }
 
 func MostVisited() gin.HandlerFunc {

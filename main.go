@@ -22,7 +22,7 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/create", web.Create(createAlias, doesAliasExist))
-	router.GET("/{alias}", web.Retrieve(getAlias))
+	router.GET("/:alias", web.Retrieve(getAlias))
 	router.GET("/mostVisited", web.MostVisited())
 
 	address := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
