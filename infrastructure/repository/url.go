@@ -43,12 +43,12 @@ func UpdateURL(db *gorm.DB) port.UpdateURL {
 
 func DoesAliasExist(db *gorm.DB) port.DoesAliasExist {
 	return func(alias string) bool {
-		exists := false
-		err := db.Where("alias = ?", alias).Find(&exists).Error
+		var count int64
+		err := db.Model(&domain.Url{}).Where("alias = ?", alias).Count(&count).Error
 		if err != nil {
 			return false
 		}
 
-		return exists
+		return count > 0
 	}
 }
