@@ -14,7 +14,7 @@ import (
 )
 
 // Creates a shortened version of a provided URL
-func Create(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist) gin.HandlerFunc {
+func Create(createURL port.CreateURL, doesAliasExist port.DoesAliasExist) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		address := ctx.Query("url")
 		alias := ctx.Query("CUSTOM_ALIAS")
@@ -33,7 +33,7 @@ func Create(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist) gin.
 
 		// Shortens the URL and measures execution time
 		start := time.Now().UTC()
-		result, err := usecase.Shorten(createAlias, doesAliasExist, address, alias)
+		result, err := usecase.Shorten(createURL, doesAliasExist, address, alias)
 		if err != nil {
 			if err.Error() == domain.AliasAlreadyExists {
 				ctx.JSON(http.StatusConflict, errorResponse{Code: "001", Description: err.Error()})
@@ -59,11 +59,11 @@ func Create(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist) gin.
 }
 
 // Gets the URL that corresponds to the alias and redirects to it
-func Retrieve(getAlias port.GetURL) gin.HandlerFunc {
+func Retrieve(getURL port.GetURL, updateURL port.UpdateURL) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		alias := ctx.Param("alias")
 
-		url, err := usecase.Retrieve(getAlias, alias)
+		url, err := usecase.Retrieve(getURL, updateURL, alias)
 		if err != nil {
 			if err.Error() == domain.ShortenedURLNotFound {
 				ctx.JSON(http.StatusNotFound, errorResponse{Code: "002", Description: err.Error()})
@@ -78,6 +78,15 @@ func Retrieve(getAlias port.GetURL) gin.HandlerFunc {
 	}
 }
 
-func MostVisited() gin.HandlerFunc {
-	return func(ctx *gin.Context) {}
+// Gets the 10 most visited URLs
+func MostVisited(getMostVisited port.GetMostVisited) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		urls, err := usecase.MostVisited(getMostVisited)
+		if err != nil {
+			ctx.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+
+		ctx.JSON(http.StatusOK, urls)
+	}
 }

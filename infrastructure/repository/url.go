@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAlias(db *gorm.DB) port.GetURL {
+func GetURL(db *gorm.DB) port.GetURL {
 	return func(alias string) (*domain.Url, error) {
 		url := new(domain.Url)
 		err := db.Where("alias = ?", alias).First(&url).Error
@@ -15,9 +15,24 @@ func GetAlias(db *gorm.DB) port.GetURL {
 	}
 }
 
-func CreateAlias(db *gorm.DB) port.CreateURL {
+func GetMostVisited(db *gorm.DB) port.GetMostVisited {
+	return func() ([]domain.Url, error) {
+		urls := make([]domain.Url, 10)
+		err := db.Order("visits DESC").Limit(10).Find(&urls).Error
+
+		return urls, err
+	}
+}
+
+func CreateURL(db *gorm.DB) port.CreateURL {
 	return func(entity *domain.Url) error {
 		return db.Create(entity).Error
+	}
+}
+
+func UpdateURL(db *gorm.DB) port.UpdateURL {
+	return func(url *domain.Url) error {
+		return db.Save(&url).Error
 	}
 }
 

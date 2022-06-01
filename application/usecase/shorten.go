@@ -17,7 +17,7 @@ const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 // Uses an alias to create a shortened version of the provided URL.
 // If the alias is not provided, it will generate a random one
-func Shorten(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist,
+func Shorten(createURL port.CreateURL, doesAliasExist port.DoesAliasExist,
 	url, alias string) (domain.Url, error) {
 
 	if strings.TrimSpace(alias) != "" {
@@ -36,7 +36,7 @@ func Shorten(createAlias port.CreateURL, doesAliasExist port.DoesAliasExist,
 		Shortened: fmt.Sprintf("%s/%s", host, alias),
 	}
 
-	err := createAlias(&entity)
+	err := createURL(&entity)
 	if err != nil {
 		return domain.Url{}, err
 	}

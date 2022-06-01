@@ -16,14 +16,16 @@ func main() {
 
 	db := repository.Connect()
 	doesAliasExist := repository.DoesAliasExist(db)
-	createAlias := repository.CreateAlias(db)
-	getAlias := repository.GetAlias(db)
+	createURL := repository.CreateURL(db)
+	getURL := repository.GetURL(db)
+	updateURL := repository.UpdateURL(db)
+	getMostVisited := repository.GetMostVisited(db)
 
 	router := gin.Default()
 
-	router.POST("/create", web.Create(createAlias, doesAliasExist))
-	router.GET("/:alias", web.Retrieve(getAlias))
-	router.GET("/mostVisited", web.MostVisited())
+	router.POST("/create", web.Create(createURL, doesAliasExist))
+	router.GET("/:alias", web.Retrieve(getURL, updateURL))
+	router.GET("/mostVisited", web.MostVisited(getMostVisited))
 
 	address := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
 
