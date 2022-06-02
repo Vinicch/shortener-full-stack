@@ -34,7 +34,7 @@ func TestRetrieveInput(t *testing.T) {
 
 	_, err := Retrieve(getURLStub, updateURLStub, alias)
 
-	assert.EqualError(t, err, "'alias' not informed")
+	assert.EqualError(t, err, domain.AliasNotInformed)
 }
 
 func TestRetrieveDeps(t *testing.T) {

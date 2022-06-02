@@ -12,7 +12,7 @@ import (
 // Gets an URL that corresponds to a given alias
 func Retrieve(getURL port.GetURL, updateURL port.UpdateURL, alias string) (string, error) {
 	if strings.TrimSpace(alias) == "" {
-		return "", errors.New("'alias' not informed")
+		return "", errors.New(domain.AliasNotInformed)
 	}
 
 	url, err := getURL(alias)

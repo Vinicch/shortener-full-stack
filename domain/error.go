@@ -1,6 +1,10 @@
 package domain
 
 const (
-	AliasAlreadyExists   = "CUSTOM ALIAS ALREADY EXISTS"
-	ShortenedURLNotFound = "SHORTENED URL NOT FOUND"
+	InternalError        = "Internal error"
+	AliasAlreadyExists   = "Custom alias already exists"
+	ShortenedURLNotFound = "Shortened URL not found"
+	UrlNotInformed       = "'url' parameter not informed"
+	InvalidURL           = "Invalid URL"
+	AliasNotInformed     = "'alias' parameter not informed"
 )

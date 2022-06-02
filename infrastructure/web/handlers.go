@@ -1,7 +1,7 @@
 package web
 
 import (
-	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,13 +21,13 @@ func Create(createURL port.CreateURL, doesAliasExist port.DoesAliasExist) gin.Ha
 
 		// Validates URL
 		if strings.TrimSpace(address) == "" {
-			ctx.AbortWithError(http.StatusBadRequest, errors.New("'url' not informed"))
+			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "003", Description: domain.UrlNotInformed})
 			return
 		}
 
 		_, err := url.Parse(address)
 		if err != nil {
-			ctx.AbortWithError(http.StatusBadRequest, errors.New("invalid URL"))
+			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "004", Description: domain.InvalidURL})
 			return
 		}
 
@@ -40,7 +40,8 @@ func Create(createURL port.CreateURL, doesAliasExist port.DoesAliasExist) gin.Ha
 				return
 			}
 
-			ctx.AbortWithError(http.StatusInternalServerError, err)
+			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}
 
@@ -70,7 +71,8 @@ func Retrieve(getURL port.GetURL, updateURL port.UpdateURL) gin.HandlerFunc {
 				return
 			}
 
-			ctx.AbortWithError(http.StatusInternalServerError, err)
+			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}
 
@@ -83,7 +85,8 @@ func MostVisited(getMostVisited port.GetMostVisited) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		urls, err := usecase.MostVisited(getMostVisited)
 		if err != nil {
-			ctx.AbortWithError(http.StatusInternalServerError, err)
+			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}
 
