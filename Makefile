@@ -2,7 +2,7 @@ up:
 	docker compose up -d
 	
 up.prod:
-	docker compose up --profile release -d
+	docker compose --profile release up -d --build
 
 down:
 	docker compose down --remove-orphans

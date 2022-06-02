@@ -1,9 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/vinicch/shortener-go/infrastructure/logging"
@@ -21,7 +18,5 @@ func main() {
 	router.GET("/url/:alias", web.Retrieve(urlFunctions.GetURL, urlFunctions.UpdateURL))
 	router.GET("/most-visited", web.MostVisited(urlFunctions.GetMostVisited))
 
-	address := fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
-
-	router.Run(address)
+	router.Run()
 }

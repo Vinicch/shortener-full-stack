@@ -1,7 +1,7 @@
 -- migrate:up
 CREATE TABLE public."url" (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    alias VARCHAR(6) NOT NULL,
+    alias VARCHAR NOT NULL,
     original VARCHAR NOT NULL,
     shortened VARCHAR NOT NULL,
     visits bigint NOT NULL

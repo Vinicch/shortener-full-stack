@@ -28,7 +28,7 @@ CREATE TABLE public.__schema_migrations (
 
 CREATE TABLE public.url (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    alias character varying(6) NOT NULL,
+    alias character varying NOT NULL,
     original character varying NOT NULL,
     shortened character varying NOT NULL,
     visits bigint NOT NULL

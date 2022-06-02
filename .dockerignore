@@ -1,0 +1,12 @@
+db/
+test/
+
+/shortener-go
+/shortener
+
+.env
+.gitignore
+LICENSE
+Makefile
+README.md
+
