@@ -42,7 +42,7 @@ func TestCreateConflict(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/create?url=http://hostname.com/long/url/path&CUSTOM_ALIAS=test", nil)
 
 	// Runs twice to guarantee conflict
-	router.ServeHTTP(recorder, req)
+	router.ServeHTTP(&httptest.ResponseRecorder{}, req)
 	router.ServeHTTP(recorder, req)
 	assert.Equal(t, http.StatusConflict, recorder.Code)
 }
