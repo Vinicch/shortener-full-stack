@@ -1,3 +1,4 @@
+client/
 db/
 test/
 
@@ -9,4 +10,3 @@ test/
 LICENSE
 Makefile
 README.md
-
