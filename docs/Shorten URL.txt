@@ -1,0 +1,20 @@
+title Shorten URL
+
+Client->Shortener: create(url, alias?)
+
+alt alias != ""
+Shortener->Database: doesAliasExist(alias)
+Database-->>Shortener: return Bool
+
+alt aliasExists
+Shortener-->>Client: return Conflict
+end
+else
+Shortener->Shortener: generateAlias()
+end
+
+Shortener->Shortener: shortenURL()
+Shortener->Database: createURL(urlInfo)
+Database-->>Shortener: return
+
+Shortener-->>Client: return UrlInfo

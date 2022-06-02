@@ -1,0 +1,9 @@
+title Get Most Visited URLs
+
+Client->Shortener: mostVisited()
+
+Shortener->Database: getMostVisited()
+note right of Database: Orders by most visits. Takes first 10
+Database-->>Shortener: return UrlInfo[]
+
+Shortener-->>Client: return UrlInfo[]

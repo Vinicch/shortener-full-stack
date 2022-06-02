@@ -1,0 +1,16 @@
+title Retrieve URL
+
+Client->Shortener: retrieve(alias)
+
+alt alias == ""
+Shortener-->>Client: return NotInformed
+end
+
+Shortener->Database: getURL(alias)
+Database-->>Shortener: return UrlInfo
+
+Shortener->Shortener: updateURLVisits()
+Shortener->Database: updateURL(urlInfo)
+Database-->>Shortener: return
+
+Shortener-->>Client: redirect(url)
