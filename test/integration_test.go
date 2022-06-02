@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/assert"
-	"github.com/vinicch/shortener-go/infrastructure/logging"
-	"github.com/vinicch/shortener-go/infrastructure/repository"
-	"github.com/vinicch/shortener-go/infrastructure/web"
+	"github.com/vinicch/shortener-go/internal/infrastructure/logging"
+	"github.com/vinicch/shortener-go/internal/infrastructure/repository"
+	"github.com/vinicch/shortener-go/internal/infrastructure/web"
 )
 
 func setup() *gin.Engine {

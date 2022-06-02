@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/vinicch/shortener-go/domain"
+	"github.com/vinicch/shortener-go/internal/domain"
 )
 
 func TestRetrieve(t *testing.T) {

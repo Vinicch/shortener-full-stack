@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/vinicch/shortener-go/infrastructure/logging"
-	"github.com/vinicch/shortener-go/infrastructure/repository"
-	"github.com/vinicch/shortener-go/infrastructure/web"
+	"github.com/vinicch/shortener-go/internal/infrastructure/logging"
+	"github.com/vinicch/shortener-go/internal/infrastructure/repository"
+	"github.com/vinicch/shortener-go/internal/infrastructure/web"
 )
 
 func main() {

@@ -3,8 +3,8 @@ package repository
 import (
 	"errors"
 
-	"github.com/vinicch/shortener-go/application/port"
-	"github.com/vinicch/shortener-go/domain"
+	"github.com/vinicch/shortener-go/internal/application/port"
+	"github.com/vinicch/shortener-go/internal/domain"
 	"gorm.io/gorm"
 )
 

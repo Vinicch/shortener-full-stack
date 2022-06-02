@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/vinicch/shortener-go/application/port"
-	"github.com/vinicch/shortener-go/application/usecase"
-	"github.com/vinicch/shortener-go/domain"
+	"github.com/vinicch/shortener-go/internal/application/port"
+	"github.com/vinicch/shortener-go/internal/application/usecase"
+	"github.com/vinicch/shortener-go/internal/domain"
 )
 
 // Creates a shortened version of a provided URL

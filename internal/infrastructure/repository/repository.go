@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog/log"
-	"github.com/vinicch/shortener-go/application/port"
+	"github.com/vinicch/shortener-go/internal/application/port"
 )
 
 type urlFunctions struct {
