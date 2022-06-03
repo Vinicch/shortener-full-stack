@@ -11,6 +11,14 @@ Solution for shortening URLs using aliases. With this it's possible to:
 
 ![](docs/Get%20Most%20Visited%20URLs.png)
 
+### About the alias generation
+The generator uses a seed that is based on the current UTC time to generate random numbers.
+Since the alias is a string composed of the english alphanumerical, the algorithm generates
+a number between 0 and the length of a string containing all upper and lower case letters of
+the alphabet + decimal digits. It then uses that as an index to get a character from the
+string. It repeats this process 6 times to get an alias that is easy to remember and also
+checks if it doesn't already exist to avoid conflicts.
+
 ## Project Setup
 ### Local
 You need to create a .env file. All the environment variables are available in the .env.example
@@ -95,3 +103,17 @@ npm run preview
 ```
 
 You may also use Yarn or PNPM, if desired
+
+## API Reference
+### Shorten URL
+```
+POST http://<HOST>:<PORT>/create?url=<string>&CUSTOM_ALIAS=<string?>
+```
+### Retrieve URL
+```
+GET http://<HOST>:<PORT>/url/<alias>
+```
+### Get Most Visited URLs
+```
+GET http://<HOST>:<PORT>/most-visited
+```
