@@ -1,7 +1,7 @@
 up:
 	docker compose up -d
 	
-up.prod:
+deploy:
 	docker compose --profile release up -d --build
 
 down:

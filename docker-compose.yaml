@@ -18,6 +18,7 @@ services:
       LOG_LEVEL: "INFO"
       DATABASE: "postgres"
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/shortener?sslmode=disable"
+      CLIENT_URL: "http://localhost:3000"
     ports:
       - 8080:8080
     profiles:
