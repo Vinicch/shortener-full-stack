@@ -1,89 +1,97 @@
-# Hire.me
-Um pequeno projeto para testar suas habilidades como programador.
+# Shortener
+Solution for shortening URLs using aliases. With this it's possible to:
+- Shorten URLs
+- Use a shortened URL to redirect to the original one
+- Check the top 10 most visited URLs
 
-## Instruções Gerais
+## How It Works
+![](docs/Shorten%20URL.png)
 
-1. *Clone* este repositório
-2. Em seu *fork*, atenda os casos de usos especificados e se desejar também os bonus points
-3. Envio um e-mail para rh@bemobi.com.br com a seu Nome e endereço do repositorio.
+![](docs/Retrieve%20URL.png)
 
-## Projeto
+![](docs/Get%20Most%20Visited%20URLs.png)
 
-O projeto consiste em reproduzir um encurtador de URL's (apenas sua API), simples e com poucas funções, porém com espaço suficiente para mostrar toda a gama de desenho de soluções, escolha de componentes, mapeamento ORM, uso de bibliotecas de terceiros, uso de GIT e criatividade.
+## Project Setup
+### Local
+You need to create a .env file. All the environment variables are available in the .env.example
+file located in the root of the project. You can also use its current values to ease the process.
 
-O projeto consiste de dois casos de uso: 
-
-1. Shorten URL
-2. Retrieve URL
-
-### 1 - Shorten URL
-![Short URL](http://i.imgur.com/MFB7VP4.jpg)
-
-1. Usuario chama a API passando a URL que deseja encurtar e um parametro opcional **CUSTOM_ALIAS**
-    1. Caso o **CUSTOM_ALIAS** já exista, um erro especifico ```{ERR_CODE: 001, Description:CUSTOM ALIAS ALREADY EXISTS}``` deve ser retornado.
-    2. Toda URL criada sem um **CUSTOM_ALIAS** deve ser reduzida a um novo alias, **você deve sugerir um algoritmo para isto e o porquê.**
-    
-2. O Registro é colocado em um repositório (*Data Store*)
-3. É retornado para o cliente um resultado que contenha a URL encurtada e outros detalhes como
-    1. Quanto tempo a operação levou
-    2. URL Original
-
-Exemplos (Você não precisa seguir este formato):
-
-* Chamada sem CUSTOM_ALIAS
+The database is inside a Docker container. There's a couple of ways to run it using the `docker-compose.yaml` provided:
+#### Docker Compose (for Compose V1 use "docker-compose" instead)
+```shell
+docker compose up -d
 ```
-PUT http://shortener/create?url=http://www.bemobi.com.br
-
-{
-   "alias": "XYhakR",
-   "url": "http://shortener/u/XYhakR",
-   "statistics": {
-       "time_taken": "10ms",
-   }
-}
+#### GNU Make
+```shell
+make up
 ```
 
-* Chamada com CUSTOM_ALIAS
-```
-PUT http://shortener/create?url=http://www.bemobi.com.br&CUSTOM_ALIAS=bemobi
+You also need to run the database migration scripts. To do that you can either run the `db/schema.sql`
+file manually or use [dbmate](https://github.com/amacneil/dbmate) to run the scritps inside `db/migrations/`
+from the root folder (which is why there's a DBMATE_MIGRATIONS_TABLE environment variable).
 
-{
-   "alias": "bemobi",
-   "url": "http://shortener/u/bemobi",
-   "statistics": {
-       "time_taken": "12ms",
-   }
-}
-```
+Finally, you can run the API:
 
-* Chamada com CUSTOM_ALIAS que já existe
+#### Development build
+```shell
+go run main.go
 ```
-PUT http://shortener/create?url=http://www.github.com&CUSTOM_ALIAS=bemobi
-
-{
-   "alias": "bemobi",
-   "err_code": "001",
-   "description": "CUSTOM ALIAS ALREADY EXISTS"
-}
+#### Production build
+```shell
+go build
+./shortener-go
 ```
 
-### 2 - Retrieve URL
-![Retrieve URL](http://i.imgur.com/f9HESb7.jpg)
+### Docker
+You can also run the API from within a Docker container:
+#### Docker Compose
+```shell
+docker compose --profile release up
+```
+#### GNU Make
+```shell
+make deploy
+```
 
-1. Usuario chama a API passando a URL que deseja acessar
-    1. Caso a **URL** não exista, um erro especifico ```{ERR_CODE: 002, Description:SHORTENED URL NOT FOUND}``` deve ser retornado.
-2. O Registro é lido de um repositório (*Data Store*)
-3. Esta tupla ou registro é mapeado para uma entidade de seu projeto
-3. É retornado para o cliente um resultado que contenha a URL final, a qual ele deve ser redirecionado automaticamente
+To check the logs:
+#### Docker Compose
+```shell
+docker compose logs -tf
+```
+#### GNU Make
+```shell
+make logs
+```
 
-## Stack Tecnológico
+To stop the containers:
+#### Docker Compose
+```shell
+docker compose down --remove-orphans
+```
+#### GNU Make
+```shell
+make down
+```
 
-Não há requerimentos específicos para linguagens, somos poliglotas. Utilize a linguagem que você se sente mais confortável.
+## Tests
+To run both unit and integration tests run:
+```shell
+go test ./...
+```
 
-## Bonus Points
+## Client
+The solution comes with a client to consume the API. To use it, run the following commands
+inside `client/`:
+#### Development build
+```shell
+npm install
+npm run dev
+```
+#### Production build
+```shell
+npm install
+npm run build
+npm run preview
+```
 
-1. Crie *testcases* para todas as funcionalidades criadas
-2. Crie um *endpoint* que mostre as dez *URL's* mais acessadas 
-3. Crie um *client* para chamar sua API
-4. Faça um diagrama de sequencia da implementação feita nos casos de uso (Dica, use o https://www.websequencediagrams.com/)
-5. Monte um deploy da sua solução utilizando containers 
+You may also use Yarn or PNPM, if desired
