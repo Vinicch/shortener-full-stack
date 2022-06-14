@@ -25,11 +25,7 @@ func Retrieve(getURL port.GetURL, updateURL port.UpdateURL, alias string) (strin
 
 	url.Visits++
 
-	err = updateURL(url)
-	if err != nil {
-		log.Error().Err(err).Msg("Error updating URL info")
-		return "", err
-	}
+	go updateURL(url)
 
 	return url.Original, nil
 }

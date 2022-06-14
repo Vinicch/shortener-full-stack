@@ -12,7 +12,7 @@ type GetMostVisited func() ([]domain.Url, error)
 type CreateURL func(*domain.Url) error
 
 // Updates URL information
-type UpdateURL func(*domain.Url) error
+type UpdateURL func(*domain.Url)
 
 // Checks if a record for the given alias already exists
 type DoesAliasExist func(string) bool

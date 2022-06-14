@@ -19,7 +19,7 @@ func TestRetrieve(t *testing.T) {
 		}, nil
 	}
 
-	updateURLStub := func(*domain.Url) error { return nil }
+	updateURLStub := func(*domain.Url) {}
 	result, err := Retrieve(getURLStub, updateURLStub, alias)
 
 	if assert.NoError(t, err) {
@@ -30,7 +30,7 @@ func TestRetrieve(t *testing.T) {
 func TestRetrieveInput(t *testing.T) {
 	alias := ""
 	getURLStub := func(string) (*domain.Url, error) { return nil, nil }
-	updateURLStub := func(*domain.Url) error { return nil }
+	updateURLStub := func(*domain.Url) {}
 
 	_, err := Retrieve(getURLStub, updateURLStub, alias)
 
@@ -40,15 +40,10 @@ func TestRetrieveInput(t *testing.T) {
 func TestRetrieveDeps(t *testing.T) {
 	alias := "test"
 	getURLErr := "getURLError"
-	updateURLErr := "updateURLError"
 
-	getURLStub := func(string) (*domain.Url, error) { return &domain.Url{}, nil }
-	updateURLStub := func(*domain.Url) error { return errors.New(updateURLErr) }
+	getURLStub := func(string) (*domain.Url, error) { return nil, errors.New(getURLErr) }
+	updateURLStub := func(*domain.Url) {}
 	_, err := Retrieve(getURLStub, updateURLStub, alias)
-	assert.EqualError(t, err, updateURLErr)
-
-	getURLStub = func(string) (*domain.Url, error) { return nil, errors.New(getURLErr) }
-	_, err = Retrieve(getURLStub, updateURLStub, alias)
 	assert.EqualError(t, err, getURLErr)
 
 	getURLStub = func(string) (*domain.Url, error) { return nil, nil }

@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 
+	"github.com/rs/zerolog/log"
 	"github.com/vinicch/shortener-go/internal/application/port"
 	"github.com/vinicch/shortener-go/internal/domain"
 	"gorm.io/gorm"
@@ -36,8 +37,11 @@ func createURL(db *gorm.DB) port.CreateURL {
 }
 
 func updateURL(db *gorm.DB) port.UpdateURL {
-	return func(url *domain.Url) error {
-		return db.Save(&url).Error
+	return func(url *domain.Url) {
+		err := db.Save(&url).Error
+		if err != nil {
+			log.Error().Err(err).Msg("Error updating URL info")
+		}
 	}
 }
 
