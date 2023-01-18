@@ -2,12 +2,14 @@ services:
   postgres:
     image: postgres:14-alpine
     environment:
+      POSTGRES_DB: shortener
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/migrations/up:/docker-entrypoint-initdb.d
   api:
     build: .
     depends_on:
