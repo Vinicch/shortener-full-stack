@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog/log"
-	"github.com/vinicch/shortener-go/internal/application/port"
-	"github.com/vinicch/shortener-go/internal/domain"
+	"github.com/vinicch/shortener-go/internal/core/domain"
+	"github.com/vinicch/shortener-go/internal/core/port"
 )
 
 // Gets an URL that corresponds to a given alias

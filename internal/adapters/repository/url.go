@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	"github.com/rs/zerolog/log"
-	"github.com/vinicch/shortener-go/internal/application/port"
-	"github.com/vinicch/shortener-go/internal/domain"
+	"github.com/vinicch/shortener-go/internal/core/domain"
+	"github.com/vinicch/shortener-go/internal/core/port"
 	"gorm.io/gorm"
 )
 

@@ -8,9 +8,16 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/vinicch/shortener-go/internal/application/port"
-	"github.com/vinicch/shortener-go/internal/application/usecase"
-	"github.com/vinicch/shortener-go/internal/domain"
+	"github.com/vinicch/shortener-go/internal/core/domain"
+	"github.com/vinicch/shortener-go/internal/core/port"
+	"github.com/vinicch/shortener-go/internal/core/usecase"
+)
+
+// Errors
+const (
+	InternalError  = "Internal error"
+	InvalidUrl     = "Invalid URL"
+	UrlNotInformed = "'url' parameter not informed"
 )
 
 // Creates a shortened version of a provided URL
@@ -21,13 +28,13 @@ func Create(createURL port.CreateURL, doesAliasExist port.DoesAliasExist) gin.Ha
 
 		// Validates URL
 		if strings.TrimSpace(address) == "" {
-			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "003", Description: domain.UrlNotInformed})
+			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "003", Description: UrlNotInformed})
 			return
 		}
 
 		_, err := url.Parse(address)
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "004", Description: domain.InvalidURL})
+			ctx.JSON(http.StatusBadRequest, errorResponse{Code: "004", Description: InvalidUrl})
 			return
 		}
 
@@ -40,7 +47,7 @@ func Create(createURL port.CreateURL, doesAliasExist port.DoesAliasExist) gin.Ha
 				return
 			}
 
-			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			msg := fmt.Sprintf("%s: %s", InternalError, err.Error())
 			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}
@@ -71,7 +78,7 @@ func Retrieve(getURL port.GetURL, updateURL port.UpdateURL) gin.HandlerFunc {
 				return
 			}
 
-			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			msg := fmt.Sprintf("%s: %s", InternalError, err.Error())
 			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}
@@ -85,7 +92,7 @@ func MostVisited(getMostVisited port.GetMostVisited) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		urls, err := usecase.MostVisited(getMostVisited)
 		if err != nil {
-			msg := fmt.Sprintf("%s: %s", domain.InternalError, err.Error())
+			msg := fmt.Sprintf("%s: %s", InternalError, err.Error())
 			ctx.JSON(http.StatusInternalServerError, errorResponse{Code: "000", Description: msg})
 			return
 		}

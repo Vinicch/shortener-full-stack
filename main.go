@@ -6,9 +6,9 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/vinicch/shortener-go/internal/infrastructure/logging"
-	"github.com/vinicch/shortener-go/internal/infrastructure/repository"
-	"github.com/vinicch/shortener-go/internal/infrastructure/web"
+	"github.com/vinicch/shortener-go/internal/adapters/logging"
+	"github.com/vinicch/shortener-go/internal/adapters/repository"
+	"github.com/vinicch/shortener-go/internal/adapters/web"
 )
 
 func main() {
